@@ -1,0 +1,121 @@
+<script>
+    const locals = <%- JSON.stringify(locals) %>;
+    console.log(locals);
+</script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Contact Page</h1>
+
+        <!-- SMS Form -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>Send SMS</h2>
+            </div>
+            <div class="card-body">
+                <form action="/send-sms" method="post">
+                    <div class="mb-3">
+                        <label for="to" class="form-label">Your Phone:</label>
+                        <input type="text" id="to" name="to" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message:</label>
+                        <textarea id="message" name="message" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send SMS</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Email Form -->
+        <div class="card">
+            <div class="card-header">
+                <h2>Send Email</h2>
+            </div>
+            <div class="card-body">
+                <form action="/send-email" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="emailTo" class="form-label">Your email:</label>
+                        <input type="email" id="emailTo" name="emailTo" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Subject:</label>
+                        <input type="text" id="subject" name="subject" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="emailMessage" class="form-label">Message:</label>
+                        <textarea id="emailMessage" name="emailMessage" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="attachment" class="form-label">Attachment:</label>
+                        <input type="file" id="attachment" name="attachment" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Email</button>
+                </form>
+            </div>
+        </div>
+
+
+        <!-- History Table -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h2>
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#historyCollapse" aria-expanded="false" aria-controls="historyCollapse">
+                        <h2>History</h2>
+                    </button>
+                </h2>
+            </div>
+            <div id="historyCollapse" class="collapse">
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#num</th>
+                                <th scope="col">Message</th>
+                                <th scope="col">Subject</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">IP</th>
+                                <th scope="col">ReplyTo</th>
+                                <th scope="col">File</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% locals.data.forEach((item, index) => { %>
+                                <tr>
+                                    <th scope="row"><%= index + 1 %></th>
+                                    <td><%= item.message %></td>
+                                    <td><%= item.subject %></td>
+                                    <td><%= item.formatted_date %></td>
+                                    <td><%= item.ip %></td>
+                                    <td><%= item.replyto %></td>
+                                    <td>
+                                        <% if (item.file) { %>
+                                            <a href="<%= item.file %>" download="<%= item.original_filename %>" target="_blank">Download File</a>
+                                        <% } else { %>
+                                            None
+                                        <% } %>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html></script>
